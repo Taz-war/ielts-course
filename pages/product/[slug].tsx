@@ -73,10 +73,12 @@ export default function ProductPage() {
               <About section={getSection("about")} />
             </div>
             {/* Sidebar */}
-            <div className="w-full md:w-[350px] flex-shrink-0">
-              <CourseInfoCard section={data} />
+            <div className="w-full md:w-[350px] flex-shrink-0 flex flex-col gap-4">
               <Trailer media={data.media} />
-              <Checklist checklist={data.checklist} />
+              <CourseInfoCard section={data} />
+              <div className="md:sticky md:top-4 z-10">
+                <Checklist checklist={data.checklist} />
+              </div>
               <CTA cta={data.cta_text} lang={lang} />
             </div>
           </div>
