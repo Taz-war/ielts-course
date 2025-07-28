@@ -1,9 +1,24 @@
 import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
-const About = ({ section }) => {
-  if (!section?.values?.length) return null;
+type SectionValue = {
+  id?: string | number;
+  title?: string;
+  description?: string;
+};
 
-  // Track open panel index (or you can allow multiple to be open)
+type AboutSection = {
+  name?: string;
+  values?: SectionValue[];
+};
+
+type AboutProps = {
+  section?: AboutSection;
+};
+
+const About: React.FC<AboutProps> = ({ section }) => {
+  if (!section?.values || section.values.length === 0) return null;
+
   const [openIdx, setOpenIdx] = useState<number | null>(0);
 
   return (
@@ -15,8 +30,10 @@ const About = ({ section }) => {
         {section.values.map((block, idx) => {
           const isOpen = openIdx === idx;
           return (
-            <div key={block.id || idx} className="border border-gray-200 rounded-lg shadow-sm bg-white">
-              {/* Accordion Header */}
+            <div
+              key={block.id ?? idx}
+              className="border border-gray-200 rounded-lg shadow-sm bg-white"
+            >
               <button
                 className={`w-full text-left flex items-center justify-between p-4 rounded-lg transition-colors ${isOpen ? "bg-green-50" : "bg-white"
                   }`}
@@ -35,16 +52,36 @@ const About = ({ section }) => {
                   viewBox="0 0 24 24"
                   strokeWidth={2}
                 >
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M19 9l-7 7-7-7"
+                  />
                 </svg>
               </button>
-              {/* Accordion Panel */}
-              {isOpen && (
-                <div
-                  className="px-5 pb-4 pt-1 prose max-w-none text-gray-700"
-                  dangerouslySetInnerHTML={{ __html: block.description || "" }}
-                />
-              )}
+              <AnimatePresence initial={false}>
+                {isOpen && (
+                  <motion.div
+                    key="content"
+                    initial="collapsed"
+                    animate="open"
+                    exit="collapsed"
+                    variants={{
+                      open: { height: "auto", opacity: 1 },
+                      collapsed: { height: 0, opacity: 0 },
+                    }}
+                    transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] }}
+                    style={{ overflow: "hidden" }}
+                  >
+                    <div
+                      className="px-5 pb-4 pt-1 prose max-w-none text-gray-700"
+                      dangerouslySetInnerHTML={{
+                        __html: block.description || "",
+                      }}
+                    />
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           );
         })}

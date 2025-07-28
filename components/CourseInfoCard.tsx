@@ -1,11 +1,11 @@
-const CourseInfoCard = ({ section }) => {
+const CourseInfoCard = ({ section }:{ section: any }) => {
   // Data fields from API
   const price = section.price || 3850;
   const oldPrice = section.old_price || 5000;
   const discount = oldPrice - price;
 
   return (
-    <aside className="bg-white border rounded-lg p-5 mt-4 shadow">
+    <aside className="bg-white border rounded-lg p-5 mt-1 shadow">
       <div className="flex items-center justify-between mb-2">
         <span className="text-2xl font-bold text-gray-900">৳{price}</span>
         {oldPrice && (

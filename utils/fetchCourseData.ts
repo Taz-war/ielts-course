@@ -13,7 +13,6 @@
 //   return res.json();
 // }
 
-// utils/fetchCourseData.ts
 export async function fetchCourseData(slug: string, lang: "en" | "bn" = "en") {
   const url = `https://api.10minuteschool.com/discovery-service/api/v1/products/${slug}?lang=${lang}`;
   const headers = {
